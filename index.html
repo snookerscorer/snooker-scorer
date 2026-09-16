@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="กระดานนับแต้มสนุกเกอร์ ไทย/อังกฤษ เลือกแดง 6 หรือ 15 ลูก บังคับลำดับแดง-สี ฟาวล์อัตโนมัติ">
+<meta name="theme-color" content="#1c6b46">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎱</text></svg>">
+<title>นับแต้มสนุกเกอร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme:light dark;
+    padding-top:env(safe-area-inset-top, 0px);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+  }
+  body{margin:0;}
+  img{max-width:100%;}
+  [hidden]{display:none !important;}
+
+  :root{
+    --bg:#eef1e7;
+    --felt:#1c6b46;
+    --felt-deep:#0f4a30;
+    --rail:#8a5a34;
+    --rail-dark:#6b4226;
+    --card-bg:#faf6ec;
+    --card-bg-2:#f1ead9;
+    --ink:#241d14;
+    --ink-muted:#6f6353;
+    --accent:#c9a24b;
+    --line:rgba(36,29,20,0.14);
+    --shadow:rgba(15,20,15,0.25);
+
+    --ball-red:#c1272d;
+    --ball-yellow:#f0bf2c;
+    --ball-green:#1f7a3d;
+    --ball-brown:#7a4a25;
+    --ball-blue:#1c5fa8;
+    --ball-pink:#e493ad;
+    --ball-black:#1a1710;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c1310;
+      --felt:#12432d;
+      --felt-deep:#0a2c1d;
+      --rail:#6b4226;
+      --rail-dark:#442a17;
+      --card-bg:#182620;
+      --card-bg-2:#132019;
+      --ink:#f1ead9;
+      --ink-muted:#b3a793;
+      --accent:#e0b95c;
+      --line:rgba(241,234,217,0.14);
+      --shadow:rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1310;
+    --felt:#12432d;
+    --felt-deep:#0a2c1d;
+    --rail:#6b4226;
+    --rail-dark:#442a17;
+    --card-bg:#182620;
+    --card-bg-2:#132019;
+    --ink:#f1ead9;
+    --ink-muted:#b3a793;
+    --accent:#e0b95c;
+    --line:rgba(241,234,217,0.14);
+    --shadow:rgba(0,0,0,0.45);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Sarabun','Kanit',sans-serif;
+  }
+  .page{
+    max-width:880px;
+    margin:0 auto;
+    padding-inline:16px;
+    padding-block:28px 48px;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  header.top{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .top-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  h1{
+    font-family:'Kanit',sans-serif;
+    font-weight:800;
+    font-size:clamp(28px,5vw,38px);
+    margin:0;
+    text-wrap:balance;
+    letter-spacing:-0.01em;
+  }
+  .lang-toggle{
+    display:inline-flex;
+    background:var(--card-bg-2);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:3px;
+    gap:3px;
+    flex-shrink:0;
+  }
+  .lang-btn{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    padding:6px 14px;
+    border-radius:999px;
+    border:none;
+    background:transparent;
+    color:var(--ink-muted);
+    cursor:pointer;
+  }
+  .lang-btn.active{
+    background:var(--accent);
+    color:#241d14;
+  }
+
+  .table-frame{
+    background:linear-gradient(160deg,var(--rail),var(--rail-dark));
+    border-radius:26px;
+    padding:14px;
+    box-shadow:0 18px 40px -18px var(--shadow);
+  }
+  .felt{
+    background:radial-gradient(120% 140% at 20% 0%,var(--felt) 0%,var(--felt-deep) 78%);
+    border-radius:18px;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    border:1px solid rgba(0,0,0,0.25);
+  }
+
+  .mode-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .mode-label{
+    font-family:'Kanit',sans-serif;
+    font-size:12px;
+    color:#d8d0ba;
+    letter-spacing:0.04em;
+  }
+  .mode-toggle{
+    display:inline-flex;
+    background:rgba(0,0,0,0.25);
+    border-radius:999px;
+    padding:3px;
+    gap:3px;
+  }
+  .mode-btn{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    padding:5px 12px;
+    border-radius:999px;
+    border:none;
+    background:transparent;
+    color:#e9e2cd;
+    cursor:pointer;
+  }
+  .mode-btn.active{
+    background:var(--accent);
+    color:#241d14;
+  }
+
+  .players-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:14px;
+    align-items:stretch;
+  }
+  @media (max-width:640px){
+    .players-row{grid-template-columns:1fr; }
+    .center-info{order:3;}
+  }
+
+  .player-card{
+    background:var(--card-bg);
+    border-radius:14px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    text-align:center;
+    border:2px solid transparent;
+    transition:border-color .2s ease, transform .2s ease;
+    min-width:0;
+  }
+  .player-card.active{
+    border-color:var(--accent);
+    transform:translateY(-2px);
+  }
+  .player-name{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    text-align:center;
+    background:transparent;
+    border:none;
+    color:var(--ink);
+    width:100%;
+    padding:2px 4px;
+    border-radius:6px;
+  }
+  .player-name:focus{outline:2px solid var(--accent); background:var(--card-bg-2);}
+  .score{
+    font-family:'Kanit',sans-serif;
+    font-weight:800;
+    font-size:52px;
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+  }
+  .sub-stats{
+    font-size:13px;
+    color:var(--ink-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  .adjust-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .adjust-btn{
+    width:22px;height:22px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--card-bg-2);
+    color:var(--ink-muted);
+    font-family:'Kanit',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .adjust-btn:hover{background:var(--accent); color:#241d14; border-color:var(--accent);}
+  .adjust-hint{font-size:10px; color:var(--ink-muted); letter-spacing:0.04em;}
+
+  .center-info{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    min-width:150px;
+    color:#f2ecd8;
+  }
+  .turn-indicator{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    background:rgba(0,0,0,0.28);
+    padding:6px 12px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .reds-rack{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:4px;
+    max-width:150px;
+  }
+  .red-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--ball-red);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,0.3);
+  }
+  .red-dot.gone{
+    background:transparent;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35);
+  }
+  .table-stats{
+    font-size:12px;
+    text-align:center;
+    line-height:1.6;
+    font-variant-numeric:tabular-nums;
+    color:#d8d0ba;
+  }
+  .table-stats b{color:#fff; font-family:'Kanit',sans-serif;}
+  .expected-label{
+    font-family:'Kanit',sans-serif;
+    font-size:13px;
+    font-weight:600;
+    background:rgba(0,0,0,0.18);
+    padding:4px 10px;
+    border-radius:999px;
+    color:#f2ecd8;
+    white-space:nowrap;
+  }
+  .expected-label b{color:var(--accent);}
+  .expected-label.done{color:var(--accent);}
+
+  .balls-row{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:12px;
+    padding-block:4px;
+  }
+  .ball-btn{
+    --ball-color:#888;
+    width:60px;height:60px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    position:relative;
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,0.75), rgba(255,255,255,0) 42%),
+      var(--ball-color);
+    box-shadow:0 4px 8px rgba(0,0,0,0.35), inset 0 -4px 6px rgba(0,0,0,0.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Kanit',sans-serif;
+    font-weight:700;
+    font-size:18px;
+    transition:transform .12s ease;
+  }
+  .ball-btn:active{transform:scale(0.9);}
+  .ball-btn:focus-visible{outline:3px solid #fff; outline-offset:2px;}
+  .ball-btn .val{text-shadow:0 1px 2px rgba(0,0,0,0.5);}
+  .ball-btn.dark-text .val{color:#241d14; text-shadow:none;}
+  .ball-btn .val{color:#fff;}
+  .ball-btn.legal{
+    box-shadow:0 4px 8px rgba(0,0,0,0.35), inset 0 -4px 6px rgba(0,0,0,0.25), 0 0 0 3px var(--accent);
+  }
+  .ball-btn.illegal{opacity:0.55;}
+  .cue-divider{
+    width:1px;
+    align-self:stretch;
+    min-height:60px;
+    background:rgba(242,236,216,0.25);
+  }
+  .ball-btn.cue-btn{
+    box-shadow:0 4px 8px rgba(0,0,0,0.35), inset 0 -4px 6px rgba(0,0,0,0.18), inset 0 0 0 2px rgba(193,39,45,0.55);
+  }
+  .ball-btn.cue-btn .val{color:var(--ball-red); text-shadow:none; font-size:14px;}
+  .ball-label{
+    position:absolute;
+    bottom:-20px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:11px;
+    font-family:'Sarabun',sans-serif;
+    color:#e9e2cd;
+    white-space:nowrap;
+  }
+  .ball-wrap{position:relative; padding-bottom:20px;}
+
+  .actions-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    position:relative;
+  }
+  .actions-row button{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 16px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.25);
+    background:rgba(0,0,0,0.22);
+    color:#f2ecd8;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .actions-row button:hover{background:rgba(0,0,0,0.34);}
+  .actions-row button:disabled{opacity:0.4; cursor:not-allowed;}
+  #resetBtn.confirming{background:var(--ball-red); border-color:var(--ball-red); color:#fff;}
+  #freeBallBtn.armed{background:var(--accent); border-color:var(--accent); color:#241d14;}
+
+  .foul-popover{
+    position:absolute;
+    bottom:56px;
+    background:var(--card-bg);
+    color:var(--ink);
+    border-radius:12px;
+    padding:10px 12px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.35);
+    font-family:'Kanit',sans-serif;
+    font-size:13px;
+    z-index:5;
+  }
+  .foul-popover button{
+    width:32px;height:32px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--card-bg-2);
+    color:var(--ink);
+    font-family:'Kanit',sans-serif;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .foul-popover button:hover{background:var(--accent); color:#241d14;}
+  #foulCancel{
+    width:26px;height:26px;
+    border-radius:50%;
+    font-size:12px;
+    color:var(--ink-muted);
+  }
+
+  .log-section{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:16px 18px;
+    border:1px solid var(--line);
+  }
+  .log-section h2{
+    font-family:'Kanit',sans-serif;
+    font-size:15px;
+    margin:0 0 8px;
+    color:var(--ink-muted);
+    font-weight:600;
+  }
+  #logList{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:180px;
+    overflow-y:auto;
+    font-size:13px;
+  }
+  #logList li{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:4px 0;
+    border-bottom:1px dashed var(--line);
+    color:var(--ink-muted);
+    font-variant-numeric:tabular-nums;
+  }
+  #logList li:last-child{border-bottom:none;}
+  #logList .empty{color:var(--ink-muted); font-style:italic;}
+
+  .rules-section{
+    background:var(--card-bg);
+    border-radius:16px;
+    padding:14px 18px;
+    border:1px solid var(--line);
+  }
+  .rules-section summary{
+    font-family:'Kanit',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:var(--ink-muted);
+    cursor:pointer;
+  }
+  .rules-section ol, .rules-section ul{
+    margin:12px 0 0;
+    padding-left:20px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:13.5px;
+    line-height:1.6;
+  }
+  .rules-section b{color:var(--ink); font-family:'Kanit',sans-serif;}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="top">
+    <div class="top-row">
+      <div>
+        <span class="eyebrow">Snooker Scoreboard</span>
+        <h1 id="pageTitle">นับแต้มสนุกเกอร์</h1>
+      </div>
+      <div class="lang-toggle" id="langToggle">
+        <button type="button" class="lang-btn" data-lang="th">ไทย</button>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="table-frame">
+    <div class="felt">
+      <div class="mode-row">
+        <span class="mode-label" id="modeLabel">จำนวนลูกแดง</span>
+        <div class="mode-toggle" id="modeToggle">
+          <button type="button" class="mode-btn" id="mode6Btn" data-reds="6">6 ลูก</button>
+          <button type="button" class="mode-btn" id="mode15Btn" data-reds="15">15 ลูก</button>
+        </div>
+      </div>
+      <div class="players-row">
+        <div class="player-card" id="card0">
+          <input class="player-name" id="name0" value="ผู้เล่น 1" maxlength="20">
+          <div class="score" id="score0">0</div>
+          <div class="adjust-row">
+            <button class="adjust-btn" type="button" data-player="0" data-delta="-1">−</button>
+            <span class="adjust-hint" id="adjustHint0">ปรับแต้ม</span>
+            <button class="adjust-btn" type="button" data-player="0" data-delta="1">+</button>
+          </div>
+          <div class="sub-stats"><span id="breakLabel0">เบรกนี้</span> <span id="break0">0</span> · <span id="highLabel0">สูงสุด</span> <span id="high0">0</span></div>
+        </div>
+
+        <div class="center-info">
+          <div class="turn-indicator" id="turnIndicator">▶ ผู้เล่น 1</div>
+          <div class="expected-label" id="expectedLabel">ต้องแทง: ลูกแดง</div>
+          <div class="reds-rack" id="redsRack"></div>
+          <div class="table-stats">
+            <div><span id="pointsLeftLabel">แต้มคงเหลือ</span> <b id="pointsLeft">75</b></div>
+            <div><span id="scoreDiffLabel">ส่วนต่าง</span> <b id="scoreDiff">0</b></div>
+          </div>
+        </div>
+
+        <div class="player-card" id="card1">
+          <input class="player-name" id="name1" value="ผู้เล่น 2" maxlength="20">
+          <div class="score" id="score1">0</div>
+          <div class="adjust-row">
+            <button class="adjust-btn" type="button" data-player="1" data-delta="-1">−</button>
+            <span class="adjust-hint" id="adjustHint1">ปรับแต้ม</span>
+            <button class="adjust-btn" type="button" data-player="1" data-delta="1">+</button>
+          </div>
+          <div class="sub-stats"><span id="breakLabel1">เบรกนี้</span> <span id="break1">0</span> · <span id="highLabel1">สูงสุด</span> <span id="high1">0</span></div>
+        </div>
+      </div>
+
+      <div class="balls-row" id="ballsRow"></div>
+
+      <div class="actions-row">
+        <button id="missBtn" type="button">พลาด / จบเทิร์น</button>
+        <button id="foulBtn" type="button">ทำฟาวล์</button>
+        <button id="freeBallBtn" type="button">ลูกฟรี</button>
+        <button id="undoBtn" type="button">ย้อนกลับ</button>
+        <button id="resetBtn" type="button">เฟรมใหม่</button>
+        <div class="foul-popover" id="foulPopover" hidden>
+          <span id="foulPopoverLabel">ฟาวล์กี่แต้ม</span>
+          <button data-foul="4" type="button">4</button>
+          <button data-foul="5" type="button">5</button>
+          <button data-foul="6" type="button">6</button>
+          <button data-foul="7" type="button">7</button>
+          <button id="foulCancel" type="button" aria-label="ยกเลิก">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="log-section">
+    <h2 id="logHeader">บันทึกการเล่น</h2>
+    <ul id="logList"><li class="empty">ยังไม่มีการเล่น</li></ul>
+  </div>
+
+  <details class="rules-section">
+    <summary id="rulesSummary">กติกาการนับแต้ม</summary>
+    <ol id="rulesList"></ol>
+  </details>
+</div>
+
+<script>
+(function(){
+  var BALLS = [
+    {key:'red', label:{th:'แดง', en:'Red'}, value:1, color:'var(--ball-red)', dark:false},
+    {key:'yellow', label:{th:'เหลือง', en:'Yellow'}, value:2, color:'var(--ball-yellow)', dark:true},
+    {key:'green', label:{th:'เขียว', en:'Green'}, value:3, color:'var(--ball-green)', dark:false},
+    {key:'brown', label:{th:'น้ำตาล', en:'Brown'}, value:4, color:'var(--ball-brown)', dark:false},
+    {key:'blue', label:{th:'น้ำเงิน', en:'Blue'}, value:5, color:'var(--ball-blue)', dark:false},
+    {key:'pink', label:{th:'ชมพู', en:'Pink'}, value:6, color:'var(--ball-pink)', dark:true},
+    {key:'black', label:{th:'ดำ', en:'Black'}, value:7, color:'var(--ball-black)', dark:false}
+  ];
+  var COLOR_ORDER = ['yellow','green','brown','blue','pink','black'];
+  var COLOR_VALUES = {yellow:2, green:3, brown:4, blue:5, pink:6, black:7};
+  var COLOR_SUM = 27;
+  var CUE_PENALTY = 4;
+  var RED_COUNT = 6;
+  var LANG = 'th';
+  var DEFAULT_NAMES = {th:['ผู้เล่น 1','ผู้เล่น 2'], en:['Player 1','Player 2']};
+
+  var STRINGS = {
+    th: {
+      pageTitle:'นับแต้มสนุกเกอร์',
+      modeLabel:'จำนวนลูกแดง',
+      mode6:'6 ลูก',
+      mode15:'15 ลูก',
+      adjustHint:'ปรับแต้ม',
+      breakLabel:'เบรกนี้',
+      highLabel:'สูงสุด',
+      pointsLeftLabel:'แต้มคงเหลือ',
+      scoreDiffLabel:'ส่วนต่าง',
+      missBtn:'พลาด / จบเทิร์น',
+      foulBtn:'ทำฟาวล์',
+      freeBallBtn:'ลูกฟรี',
+      undoBtn:'ย้อนกลับ',
+      resetBtn:'เฟรมใหม่',
+      resetConfirm:'กดอีกครั้งเพื่อยืนยัน',
+      foulPopoverLabel:'ฟาวล์กี่แต้ม',
+      foulCancelLabel:'ยกเลิก',
+      logHeader:'บันทึกการเล่น',
+      logEmpty:'ยังไม่มีการเล่น',
+      rulesSummary:'กติกาการนับแต้ม (สากล เลือกได้ 6 หรือ 15 ลูก)',
+      expectedRed:'ต้องแทง: ลูกแดง',
+      expectedColorFree:'ต้องแทง: ลูกสี (เลือกได้)',
+      expectedColorPrefix:'ต้องแทง: ลูก',
+      frameOver:'จบเฟรมแล้ว',
+      freeBallTag:' · ลูกฟรี!',
+      cueBallLabel:'ขาว',
+      cueAria:function(n){ return 'ลูกขาว (คิวบอล) ลงหลุม หัก ' + n + ' แต้มจากตัวเอง'; },
+      ballAria:function(name,val){ return name + ' ' + val + ' แต้ม'; },
+      foulReasonRedFirst:'ต้องแทงลูกแดงก่อน',
+      foulReasonColorNotRed:'ต้องแทงลูกสี ไม่ใช่ลูกแดง',
+      foulReasonColorPrefix:'ต้องแทงลูก',
+      foulReasonColorSuffix:'ก่อน',
+      foulReasonColorsDone:'ลูกสีหมดแล้ว',
+      logs:{
+        pot:function(p,ball,val,brk){ return p + ' ลง' + ball + ' (+' + val + ') · เบรก ' + brk; },
+        freeBall:function(p,ball,val,brk){ return p + ' ใช้ลูกฟรี แทง' + ball + ' แทนลูกที่ต้องแทง (+' + val + ') · เบรก ' + brk; },
+        orderFoul:function(p,ball,reason,pts){ return p + ' แทงลูก' + ball + 'ผิดจังหวะ (' + reason + ') → หัก ' + pts + ' แต้มจากตัวเอง'; },
+        whiteFoul:function(p,pts){ return p + ' ทำลูกขาวลงหลุม → หัก ' + pts + ' แต้มจากตัวเอง'; },
+        manualFoul:function(p,pts){ return p + ' ทำฟาวล์ → หัก ' + pts + ' แต้มจากตัวเอง'; },
+        adjust:function(p,delta){ return p + ' ปรับแต้มมือ ' + (delta>0?'+':'') + delta; },
+        miss:function(p,brk){ return p + ' พลาด' + (brk>0 ? ' · เบรก ' + brk : ''); },
+        modeChange:function(n){ return 'เปลี่ยนโหมดเป็นลูกแดง ' + n + ' ลูก เริ่มเฟรมใหม่'; },
+        blackRespot:'แต้มเท่ากันหลังดำลง! ตั้งลูกดำใหม่เพื่อตัดสินเฟรม'
+      },
+      rules:[
+        'เลือกจำนวนลูกแดงได้ที่ปุ่ม <b>6 ลูก / 15 ลูก</b> ด้านบนโต๊ะ (15 ลูก คือมาตรฐานสนุกเกอร์จริง ส่วน 6 ลูกเป็นเวอร์ชันย่อ เล่นเร็วขึ้น) กติกาการนับแต้มอื่นๆ ใช้ตามมาตรฐานสากลเหมือนกันทั้งสองโหมด การสลับโหมดจะเริ่มเฟรมใหม่ทันที',
+        'ช่วงที่ยังมีลูกแดงเหลือบนโต๊ะ ต้องแทงสลับกัน: <b>แดง → สี → แดง → สี</b> ไปเรื่อยๆ ภายในตาเดียวกัน (ลูกสีที่แทงตอนนี้เลือกลูกไหนก็ได้ และจะถูกตั้งกลับเสมอ) และ<b>ทุกครั้งที่เปลี่ยนตาผู้เล่น</b> (พลาด/ฟาวล์) ถ้ายังมีลูกแดงเหลือ ผู้เล่นคนถัดไปต้องเริ่มแทงลูกแดงก่อนเสมอ',
+        'ถ้าแทงผิดจังหวะ เช่น แทงลูกสีทั้งที่ต้องแทงแดงก่อน ระบบจะนับเป็น <b>ฟาวล์ทันที</b> และ<b>หักแต้มออกจากคนแทงเอง</b> (อย่างน้อย 4 แต้ม หรือเท่าค่าลูกที่เกี่ยวข้องถ้ามากกว่า) แล้วสลับตาให้อีกฝ่ายเล่นต่อ',
+        'เมื่อแทงลูกแดงหมดทุกลูกแล้ว ผู้เล่นจะแทงลูกสีที่เลือกได้อีก 1 ลูกก่อน จากนั้นเข้าสู่ช่วงเก็บลูกสีตามลำดับที่ตายตัว: <b>เหลือง → เขียว → น้ำตาล → น้ำเงิน → ชมพู → ดำ</b>',
+        'ป้าย "ต้องแทง" กลางโต๊ะ และแสงเรืองที่ลูกบอกอยู่แล้วว่าตอนนี้แทงลูกไหนได้โดยไม่ฟาวล์',
+        'ปุ่ม <b>ลูกฟรี</b> กดก่อนแทง 1 ครั้งเมื่อกรรมการให้ฟรีบอลหลังโดนฟาวล์แล้วถูกสนุกเกอร์ ลูกที่แทงลงจะนับแต้มเสมือนเป็นลูกที่ต้อง "on" จริง (ช่วงแดงนับเป็น 1 แต้มและเปลี่ยนไปรอแทงสี, ช่วงเก็บสีนับเป็นค่าลูกสีที่ค้างอยู่ และลูกจริงยังไม่ถูกเก็บ) ใช้ได้แค่ช็อตเดียวแล้วปิดเอง',
+        'ถ้าแดงลูกสุดท้าย/ลูกดำถูกเก็บจนหมดโต๊ะแล้ว<b>แต้มเท่ากันพอดี</b> ระบบจะตั้งลูกดำใหม่ให้อัตโนมัติเพื่อแทงตัดสินเฟรม',
+        'ปุ่ม <b>ทำฟาวล์</b> ใช้สำหรับฟาวล์แบบอื่นที่ไม่เกี่ยวกับลำดับลูก เช่น แทงไม่โดนลูกเป้าหมาย เลือกแต้มโทษ 4-7 แล้ว<b>หักออกจากคนแทงเอง</b>เช่นกัน',
+        'ปุ่ม <b>พลาด/จบเทิร์น</b> ใช้เมื่อแทงไม่ลง แล้วสลับตาให้อีกฝ่ายโดยไม่มีการหักแต้ม',
+        'ค่าแต้มลูกบอล: แดง 1 · เหลือง 2 · เขียว 3 · น้ำตาล 4 · น้ำเงิน 5 · ชมพู 6 · ดำ 7',
+        'ถ้าทำ <b>ลูกขาว (คิวบอล) ลงหลุม</b> กดปุ่มลูกขาว จะ<b>หัก 4 แต้มออกจากคะแนนของคนแทงเอง</b>ทันที (ไม่ใช่มอบแต้มให้อีกฝ่าย) แล้วสลับตาให้อีกฝ่ายเล่นต่อ',
+        'ปุ่ม <b>−/+ ปรับแต้ม</b> ใต้คะแนนแต่ละฝั่ง ใช้แก้คะแนนด้วยมือได้อิสระ (เช่น กรณีกรรมการต้องหักแต้มเป็นกรณีพิเศษ) คะแนนสามารถ<b>ติดลบ</b>ได้ถ้าปรับหักจนต่ำกว่า 0'
+      ]
+    },
+    en: {
+      pageTitle:'Snooker Scorer',
+      modeLabel:'Reds on table',
+      mode6:'6 reds',
+      mode15:'15 reds',
+      adjustHint:'adjust',
+      breakLabel:'Break',
+      highLabel:'High',
+      pointsLeftLabel:'Points left',
+      scoreDiffLabel:'Difference',
+      missBtn:'Miss / End turn',
+      foulBtn:'Foul',
+      freeBallBtn:'Free ball',
+      undoBtn:'Undo',
+      resetBtn:'New frame',
+      resetConfirm:'Tap again to confirm',
+      foulPopoverLabel:'Foul points',
+      foulCancelLabel:'Cancel',
+      logHeader:'Match log',
+      logEmpty:'No shots yet',
+      rulesSummary:'Scoring rules (standard, 6 or 15 reds)',
+      expectedRed:'On: Red',
+      expectedColorFree:'On: any colour',
+      expectedColorPrefix:'On: ',
+      frameOver:'Frame over',
+      freeBallTag:' · free ball!',
+      cueBallLabel:'Cue ball',
+      cueAria:function(n){ return 'Cue ball potted, deduct ' + n + ' points from the striker'; },
+      ballAria:function(name,val){ return name + ', ' + val + ' points'; },
+      foulReasonRedFirst:'a red must be potted first',
+      foulReasonColorNotRed:'a colour is on, not a red',
+      foulReasonColorPrefix:'must pot ',
+      foulReasonColorSuffix:' first',
+      foulReasonColorsDone:'no colours left',
+      logs:{
+        pot:function(p,ball,val,brk){ return p + ' potted ' + ball + ' (+' + val + ') · break ' + brk; },
+        freeBall:function(p,ball,val,brk){ return p + ' used a free ball on ' + ball + ' (+' + val + ') · break ' + brk; },
+        orderFoul:function(p,ball,reason,pts){ return p + ' potted ' + ball + ' out of turn (' + reason + ') → ' + pts + ' points deducted'; },
+        whiteFoul:function(p,pts){ return p + ' potted the cue ball → ' + pts + ' points deducted'; },
+        manualFoul:function(p,pts){ return p + ' fouled → ' + pts + ' points deducted'; },
+        adjust:function(p,delta){ return p + ' manual adjustment ' + (delta>0?'+':'') + delta; },
+        miss:function(p,brk){ return p + ' missed' + (brk>0 ? ' · break ' + brk : ''); },
+        modeChange:function(n){ return 'Switched to ' + n + ' reds — new frame started'; },
+        blackRespot:'Scores level after the black! Black respotted to decide the frame'
+      },
+      rules:[
+        'Pick the number of reds with the <b>6 reds / 15 reds</b> buttons above the table (15 is the real snooker standard, 6 is a short version for quicker games). Every other scoring rule is the same in both modes. Switching modes starts a new frame straight away.',
+        'While reds remain on the table you alternate <b>red → colour → red → colour</b> within the same visit (any colour may be chosen, and it is always respotted). <b>Every time the turn changes</b> (miss or foul), if reds remain, the incoming player must start with a red again.',
+        'Potting out of turn — a colour when a red is on, for example — is an <b>instant foul</b> and <b>deducts points from the striker</b> (at least 4, or the value of the ball involved if higher), then the turn passes to the opponent.',
+        'Once every red is gone the striker pots one colour of their choice, then the fixed colour sequence begins: <b>Yellow → Green → Brown → Blue → Pink → Black</b>.',
+        'The "On" pill in the middle of the table and the glowing ball always show which ball can be potted right now without fouling.',
+        'The <b>Free ball</b> button is pressed before a shot when the referee awards a free ball after a snooker. Whatever you pot scores as the ball that is really on (1 point during reds, then a colour is due; during the colour sequence it scores the value of the colour still owed and that colour stays on the table). It lasts for one shot only.',
+        'If the table is cleared and the <b>scores are exactly level</b>, the black is respotted automatically to decide the frame.',
+        'The <b>Foul</b> button covers fouls unrelated to ball order, such as missing the object ball. Pick 4-7 points and they are <b>deducted from the striker</b> too.',
+        'The <b>Miss / End turn</b> button is for a shot that pots nothing — the turn passes with no deduction.',
+        'Ball values: Red 1 · Yellow 2 · Green 3 · Brown 4 · Blue 5 · Pink 6 · Black 7',
+        'Potting the <b>cue ball</b> deducts <b>4 points from the striker\'s own score</b> (it is not awarded to the opponent), then the turn passes.',
+        'The <b>−/+ adjust</b> buttons under each score let you correct a score by hand, for example a referee\'s special penalty. Scores may go <b>negative</b> if adjusted below 0.'
+      ]
+    }
+  };
+
+  function S(){ return STRINGS[LANG]; }
+
+  var ballsRow = document.getElementById('ballsRow');
+  var ballButtons = {};
+  var ballLabelEls = {};
+  BALLS.forEach(function(b){
+    var wrap = document.createElement('div');
+    wrap.className = 'ball-wrap';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ball-btn' + (b.dark ? ' dark-text' : '');
+    btn.style.setProperty('--ball-color', b.color);
+    btn.innerHTML = '<span class="val">' + b.value + '</span>';
+    btn.addEventListener('click', function(){ potBall(b.key); });
+    var label = document.createElement('div');
+    label.className = 'ball-label';
+    wrap.appendChild(btn);
+    wrap.appendChild(label);
+    ballsRow.appendChild(wrap);
+    ballButtons[b.key] = btn;
+    ballLabelEls[b.key] = label;
+  });
+
+  var divider = document.createElement('div');
+  divider.className = 'cue-divider';
+  ballsRow.appendChild(divider);
+
+  var cueWrap = document.createElement('div');
+  cueWrap.className = 'ball-wrap';
+  var cueBtn = document.createElement('button');
+  cueBtn.type = 'button';
+  cueBtn.className = 'ball-btn cue-btn';
+  cueBtn.style.setProperty('--ball-color', '#f2ecd8');
+  cueBtn.innerHTML = '<span class="val">-' + CUE_PENALTY + '</span>';
+  cueBtn.addEventListener('click', function(){ potWhite(); });
+  var cueLabel = document.createElement('div');
+  cueLabel.className = 'ball-label';
+  cueWrap.appendChild(cueBtn);
+  cueWrap.appendChild(cueLabel);
+  ballsRow.appendChild(cueWrap);
+
+  var redsRack = document.getElementById('redsRack');
+  function buildRedsRack(){
+    redsRack.innerHTML = '';
+    for(var i=0;i<RED_COUNT;i++){
+      var dot = document.createElement('div');
+      dot.className = 'red-dot';
+      redsRack.appendChild(dot);
+    }
+  }
+  buildRedsRack();
+
+  function freshState(){
+    return {
+      names:DEFAULT_NAMES[LANG].slice(),
+      lang:LANG,
+      scores:[0,0],
+      highBreaks:[0,0],
+      current:0,
+      breakScore:0,
+      redsRemaining:RED_COUNT,
+      redCountMode:RED_COUNT,
+      colorsRemaining: COLOR_ORDER.slice(),
+      phase:'reds',
+      expected:'red',
+      freeBall:false,
+      log:[]
+    };
+  }
+
+  var state = null;
+  var undoStack = [];
+
+  function snapshot(){ return JSON.parse(JSON.stringify(state)); }
+
+  function pushUndo(){
+    undoStack.push(snapshot());
+    if(undoStack.length > 60) undoStack.shift();
+  }
+
+  function addLog(text){
+    state.log.unshift(text);
+    if(state.log.length > 40) state.log.length = 40;
+  }
+
+  function isLegal(key){
+    if(state.phase === 'reds'){
+      if(state.expected === 'red') return key === 'red';
+      return key !== 'red';
+    }
+    return key === state.expected;
+  }
+
+  function expectedValue(){
+    if(state.phase === 'reds'){
+      return state.expected === 'red' ? 1 : 0;
+    }
+    return COLOR_VALUES[state.expected] || 0;
+  }
+
+  function foulReason(){
+    if(state.phase === 'reds'){
+      return state.expected === 'red' ? S().foulReasonRedFirst : S().foulReasonColorNotRed;
+    }
+    if(state.expected) return S().foulReasonColorPrefix + ballLabel(state.expected) + S().foulReasonColorSuffix;
+    return S().foulReasonColorsDone;
+  }
+
+  function checkBlackRespot(){
+    if(state.phase === 'colors' && !state.expected && state.scores[0] === state.scores[1]){
+      state.colorsRemaining = ['black'];
+      state.expected = 'black';
+      addLog(S().logs.blackRespot);
+    }
+  }
+
+  function potBall(key){
+    if(state.phase === 'colors' && !state.expected) return;
+    pushUndo();
+    var ball = BALLS.filter(function(b){return b.key===key;})[0];
+    var cur = state.current;
+    var wasFree = state.freeBall;
+
+    if(wasFree){
+      var scoreValue;
+      if(state.phase === 'reds'){
+        scoreValue = 1;
+        if(state.expected === 'red') state.expected = 'color';
+      } else {
+        scoreValue = COLOR_VALUES[state.expected] || 0;
+      }
+      state.scores[cur] += scoreValue;
+      state.breakScore += scoreValue;
+      addLog(S().logs.freeBall(state.names[cur], ballLabel(key), scoreValue, state.breakScore));
+    } else if(isLegal(key)){
+      state.scores[cur] += ball.value;
+      state.breakScore += ball.value;
+
+      if(state.phase === 'reds'){
+        if(key === 'red'){
+          state.redsRemaining -= 1;
+          state.expected = 'color';
+        } else if(state.redsRemaining > 0){
+          state.expected = 'red';
+        } else {
+          state.phase = 'colors';
+          state.colorsRemaining = COLOR_ORDER.slice();
+          state.expected = state.colorsRemaining[0];
+        }
+      } else {
+        var idx = state.colorsRemaining.indexOf(key);
+        if(idx !== -1) state.colorsRemaining.splice(idx,1);
+        state.expected = state.colorsRemaining.length ? state.colorsRemaining[0] : null;
+      }
+
+      addLog(S().logs.pot(state.names[cur], ballLabel(key), ball.value, state.breakScore));
+      if(state.phase === 'colors') checkBlackRespot();
+    } else {
+      var foulPts = Math.max(4, expectedValue(), ball.value);
+      var reason = foulReason();
+      state.scores[cur] -= foulPts;
+      addLog(S().logs.orderFoul(state.names[cur], ballLabel(key), reason, foulPts));
+      endVisit(null);
+    }
+
+    state.freeBall = false;
+    render();
+    save();
+  }
+
+  function ballLabel(key){
+    return BALLS.filter(function(b){return b.key===key;})[0].label[LANG];
+  }
+
+  function potWhite(){
+    pushUndo();
+    var cur = state.current;
+    state.scores[cur] -= CUE_PENALTY;
+    addLog(S().logs.whiteFoul(state.names[cur], CUE_PENALTY));
+    endVisit(null);
+    state.freeBall = false;
+    render();
+    save();
+  }
+
+  function adjustScore(playerIdx, delta){
+    pushUndo();
+    state.scores[playerIdx] += delta;
+    addLog(S().logs.adjust(state.names[playerIdx], delta));
+    render();
+    save();
+  }
+
+  function endVisit(reasonKey){
+    var cur = state.current;
+    if(state.breakScore > state.highBreaks[cur]) state.highBreaks[cur] = state.breakScore;
+    if(reasonKey === 'miss') addLog(S().logs.miss(state.names[cur], state.breakScore));
+    state.breakScore = 0;
+    state.current = 1 - cur;
+    if(state.phase === 'reds' && state.redsRemaining > 0){
+      state.expected = 'red';
+    }
+  }
+
+  document.getElementById('missBtn').addEventListener('click', function(){
+    pushUndo();
+    endVisit('miss');
+    state.freeBall = false;
+    render();
+    save();
+  });
+
+  var foulPopover = document.getElementById('foulPopover');
+  document.getElementById('foulBtn').addEventListener('click', function(){
+    foulPopover.hidden = !foulPopover.hidden;
+  });
+  foulPopover.querySelectorAll('button[data-foul]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      pushUndo();
+      var pts = parseInt(btn.getAttribute('data-foul'),10);
+      var cur = state.current;
+      state.scores[cur] -= pts;
+      addLog(S().logs.manualFoul(state.names[cur], pts));
+      endVisit(null);
+      state.freeBall = false;
+      foulPopover.hidden = true;
+      render();
+      save();
+    });
+  });
+  document.getElementById('foulCancel').addEventListener('click', function(){
+    foulPopover.hidden = true;
+  });
+  document.addEventListener('click', function(e){
+    if(!foulPopover.hidden && !foulPopover.contains(e.target) && e.target.id !== 'foulBtn'){
+      foulPopover.hidden = true;
+    }
+  });
+
+  document.getElementById('freeBallBtn').addEventListener('click', function(){
+    state.freeBall = !state.freeBall;
+    render();
+    save();
+  });
+
+  document.querySelectorAll('.adjust-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var playerIdx = parseInt(btn.getAttribute('data-player'),10);
+      var delta = parseInt(btn.getAttribute('data-delta'),10);
+      adjustScore(playerIdx, delta);
+    });
+  });
+
+  function setRedCount(n){
+    if(RED_COUNT === n) return;
+    RED_COUNT = n;
+    buildRedsRack();
+    var names = state.names.slice();
+    state = freshState();
+    state.names = names;
+    undoStack = [];
+    addLog(S().logs.modeChange(n));
+    render();
+    save();
+  }
+  document.querySelectorAll('.mode-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      setRedCount(parseInt(btn.getAttribute('data-reds'),10));
+    });
+  });
+
+  function applyLanguage(){
+    var s = S();
+    document.documentElement.lang = LANG;
+    document.title = s.pageTitle;
+    document.getElementById('pageTitle').textContent = s.pageTitle;
+    document.getElementById('modeLabel').textContent = s.modeLabel;
+    document.getElementById('mode6Btn').textContent = s.mode6;
+    document.getElementById('mode15Btn').textContent = s.mode15;
+    document.getElementById('missBtn').textContent = s.missBtn;
+    document.getElementById('foulBtn').textContent = s.foulBtn;
+    document.getElementById('freeBallBtn').textContent = s.freeBallBtn;
+    document.getElementById('undoBtn').textContent = s.undoBtn;
+    document.getElementById('resetBtn').textContent = s.resetBtn;
+    document.getElementById('foulPopoverLabel').textContent = s.foulPopoverLabel;
+    document.getElementById('foulCancel').setAttribute('aria-label', s.foulCancelLabel);
+    document.getElementById('logHeader').textContent = s.logHeader;
+    document.getElementById('rulesSummary').textContent = s.rulesSummary;
+    document.getElementById('rulesList').innerHTML = s.rules.map(function(r){ return '<li>' + r + '</li>'; }).join('');
+    [0,1].forEach(function(i){
+      document.getElementById('adjustHint' + i).textContent = s.adjustHint;
+      document.getElementById('breakLabel' + i).textContent = s.breakLabel;
+      document.getElementById('highLabel' + i).textContent = s.highLabel;
+    });
+    document.getElementById('pointsLeftLabel').textContent = s.pointsLeftLabel;
+    document.getElementById('scoreDiffLabel').textContent = s.scoreDiffLabel;
+    BALLS.forEach(function(b){
+      ballLabelEls[b.key].textContent = b.label[LANG];
+      ballButtons[b.key].setAttribute('aria-label', s.ballAria(b.label[LANG], b.value));
+    });
+    cueLabel.textContent = s.cueBallLabel;
+    cueBtn.setAttribute('aria-label', s.cueAria(CUE_PENALTY));
+    document.querySelectorAll('.lang-btn').forEach(function(btn){
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === LANG);
+    });
+  }
+
+  function setLang(newLang){
+    if(LANG === newLang || !STRINGS[newLang]) return;
+    [0,1].forEach(function(i){
+      if(state.names[i] === DEFAULT_NAMES.th[i] || state.names[i] === DEFAULT_NAMES.en[i]){
+        state.names[i] = DEFAULT_NAMES[newLang][i];
+      }
+    });
+    LANG = newLang;
+    state.lang = newLang;
+    resetArmed = false;
+    clearTimeout(resetTimer);
+    resetBtn.classList.remove('confirming');
+    applyLanguage();
+    render();
+    save();
+  }
+  document.querySelectorAll('.lang-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      setLang(btn.getAttribute('data-lang'));
+    });
+  });
+
+  document.getElementById('undoBtn').addEventListener('click', function(){
+    if(undoStack.length === 0) return;
+    state = undoStack.pop();
+    render();
+    save();
+  });
+
+  var resetBtn = document.getElementById('resetBtn');
+  var resetArmed = false;
+  var resetTimer = null;
+  resetBtn.addEventListener('click', function(){
+    if(!resetArmed){
+      resetArmed = true;
+      resetBtn.textContent = S().resetConfirm;
+      resetBtn.classList.add('confirming');
+      resetTimer = setTimeout(function(){
+        resetArmed = false;
+        resetBtn.textContent = S().resetBtn;
+        resetBtn.classList.remove('confirming');
+      }, 3000);
+      return;
+    }
+    clearTimeout(resetTimer);
+    resetArmed = false;
+    resetBtn.textContent = S().resetBtn;
+    resetBtn.classList.remove('confirming');
+    var names = state.names.slice();
+    state = freshState();
+    state.names = names;
+    undoStack = [];
+    render();
+    save();
+  });
+
+  ['name0','name1'].forEach(function(id,i){
+    var el = document.getElementById(id);
+    el.addEventListener('input', function(){
+      state.names[i] = el.value || DEFAULT_NAMES[LANG][i];
+      render();
+      save();
+    });
+  });
+
+  function render(){
+    document.getElementById('name0').value = state.names[0];
+    document.getElementById('name1').value = state.names[1];
+    document.getElementById('score0').textContent = state.scores[0];
+    document.getElementById('score1').textContent = state.scores[1];
+    document.getElementById('high0').textContent = state.highBreaks[0];
+    document.getElementById('high1').textContent = state.highBreaks[1];
+    document.getElementById('break0').textContent = state.current===0 ? state.breakScore : 0;
+    document.getElementById('break1').textContent = state.current===1 ? state.breakScore : 0;
+
+    document.getElementById('card0').classList.toggle('active', state.current===0);
+    document.getElementById('card1').classList.toggle('active', state.current===1);
+    document.getElementById('turnIndicator').textContent = '▶ ' + state.names[state.current];
+
+    document.querySelectorAll('.mode-btn').forEach(function(btn){
+      btn.classList.toggle('active', parseInt(btn.getAttribute('data-reds'),10) === RED_COUNT);
+    });
+
+    var dots = redsRack.querySelectorAll('.red-dot');
+    dots.forEach(function(dot,i){
+      dot.classList.toggle('gone', i >= state.redsRemaining);
+    });
+
+    var pointsLeft = state.phase === 'reds'
+      ? state.redsRemaining * 8 + COLOR_SUM
+      : state.colorsRemaining.reduce(function(sum,k){ return sum + COLOR_VALUES[k]; }, 0);
+    document.getElementById('pointsLeft').textContent = pointsLeft;
+    document.getElementById('scoreDiff').textContent = Math.abs(state.scores[0]-state.scores[1]);
+
+    document.getElementById('undoBtn').disabled = undoStack.length===0;
+
+    var expectedLabel = document.getElementById('expectedLabel');
+    var expectedText;
+    if(state.phase === 'reds'){
+      expectedText = state.expected === 'red' ? S().expectedRed : S().expectedColorFree;
+    } else if(state.expected){
+      expectedText = S().expectedColorPrefix + ballLabel(state.expected);
+    } else {
+      expectedText = S().frameOver;
+    }
+    if(state.freeBall) expectedText += S().freeBallTag;
+    expectedLabel.textContent = expectedText;
+    expectedLabel.classList.toggle('done', !state.expected);
+
+    document.getElementById('freeBallBtn').classList.toggle('armed', state.freeBall);
+
+    BALLS.forEach(function(b){
+      var btn = ballButtons[b.key];
+      var legal = state.freeBall || (state.expected !== null && isLegal(b.key));
+      btn.classList.toggle('legal', legal);
+      btn.classList.toggle('illegal', !legal);
+    });
+
+    var logList = document.getElementById('logList');
+    logList.innerHTML = '';
+    if(state.log.length===0){
+      var li = document.createElement('li');
+      li.className='empty';
+      li.textContent=S().logEmpty;
+      logList.appendChild(li);
+    } else {
+      state.log.forEach(function(entry){
+        var li = document.createElement('li');
+        li.textContent = entry;
+        logList.appendChild(li);
+      });
+    }
+  }
+
+  function save(){
+    try{
+      localStorage.setItem('snooker-scorer-state', JSON.stringify(state));
+    }catch(e){}
+    try{
+      if(window.claude && window.claude.hot && window.claude.hot.snapshot){
+        window.claude.hot.snapshot(state);
+      }
+    }catch(e){}
+  }
+
+  function load(fromHot){
+    if(fromHot){ return fromHot; }
+    try{
+      var raw = localStorage.getItem('snooker-scorer-state');
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return null;
+  }
+
+  function boot(hotData){
+    var loaded = load(hotData && Object.keys(hotData).length ? hotData : null);
+    if(loaded && (loaded.redCountMode === 6 || loaded.redCountMode === 15)){
+      RED_COUNT = loaded.redCountMode;
+      buildRedsRack();
+    }
+    if(loaded && STRINGS[loaded.lang]) LANG = loaded.lang;
+    state = loaded ? Object.assign(freshState(), loaded) : freshState();
+    if(!state.phase) state.phase = 'reds';
+    if(!state.expected) state.expected = state.phase === 'reds' ? 'red' : (state.colorsRemaining[0] || null);
+    if(state.redsRemaining > RED_COUNT) state.redsRemaining = RED_COUNT;
+    applyLanguage();
+    render();
+  }
+
+  try{
+    if(window.claude && window.claude.hot && window.claude.hot.ready){
+      window.claude.hot.ready(boot);
+    } else {
+      boot(window.claude && window.claude.hot ? window.claude.hot.data : null);
+    }
+  }catch(e){
+    boot(null);
+  }
+})();
+</script>
+</body>
+</html>
