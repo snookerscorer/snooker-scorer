@@ -166,6 +166,33 @@
     border:1px solid rgba(0,0,0,0.25);
   }
 
+  .match-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    padding-bottom:2px;
+    border-bottom:1px solid rgba(242,236,216,0.15);
+  }
+  .match-frame{
+    font-family:'Kanit',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:#f2ecd8;
+  }
+  .match-score{
+    font-family:'Kanit',sans-serif;
+    font-size:13px;
+    color:#d8d0ba;
+    font-variant-numeric:tabular-nums;
+  }
+  .match-score b{
+    color:var(--accent);
+    font-size:16px;
+    padding:0 2px;
+  }
+
   .mode-row{
     display:flex;
     align-items:center;
@@ -460,7 +487,29 @@
     color:var(--ink-muted);
     font-weight:600;
   }
-  #logList{
+  .section-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .section-head h2{margin:0;}
+  .ghost-btn{
+    font-family:'Kanit',sans-serif;
+    font-weight:600;
+    font-size:12px;
+    padding:5px 12px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--card-bg-2);
+    color:var(--ink-muted);
+    cursor:pointer;
+  }
+  .ghost-btn:hover{background:var(--accent); color:#241d14; border-color:var(--accent);}
+  .ghost-btn.confirming{background:var(--ball-red); border-color:var(--ball-red); color:#fff;}
+
+  #logList, #framesList{
     list-style:none;
     margin:0;
     padding:0;
@@ -471,7 +520,7 @@
     overflow-y:auto;
     font-size:13px;
   }
-  #logList li{
+  #logList li, #framesList li{
     display:flex;
     justify-content:space-between;
     gap:10px;
@@ -480,8 +529,10 @@
     color:var(--ink-muted);
     font-variant-numeric:tabular-nums;
   }
-  #logList li:last-child{border-bottom:none;}
-  #logList .empty{color:var(--ink-muted); font-style:italic;}
+  #logList li:last-child, #framesList li:last-child{border-bottom:none;}
+  #logList .empty, #framesList .empty{color:var(--ink-muted); font-style:italic;}
+  #framesList li b{color:var(--ink); font-family:'Kanit',sans-serif;}
+  #framesList .frame-score{color:var(--ink); font-weight:600; white-space:nowrap;}
 
   .rules-section{
     background:var(--card-bg);
@@ -526,6 +577,10 @@
 
   <div class="table-frame">
     <div class="felt">
+      <div class="match-row">
+        <span class="match-frame" id="frameNoLabel">เฟรมที่ 1</span>
+        <span class="match-score"><span id="framesWonLabel">ชนะเฟรม</span> <b id="framesWon0">0</b>-<b id="framesWon1">0</b></span>
+      </div>
       <div class="mode-row">
         <span class="mode-label" id="modeLabel">จำนวนลูกแดง</span>
         <div class="mode-toggle" id="modeToggle">
@@ -588,6 +643,14 @@
   </div>
 
   <div class="log-section">
+    <div class="section-head">
+      <h2 id="framesHeader">ผลแต่ละเฟรม</h2>
+      <button type="button" class="ghost-btn" id="clearMatchBtn">ล้างแมตช์</button>
+    </div>
+    <ul id="framesList"><li class="empty">ยังไม่จบเฟรมไหน</li></ul>
+  </div>
+
+  <div class="log-section">
     <h2 id="logHeader">บันทึกการเล่น</h2>
     <ul id="logList"><li class="empty">ยังไม่มีการเล่น</li></ul>
   </div>
@@ -638,6 +701,14 @@
       foulCancelLabel:'ยกเลิก',
       logHeader:'บันทึกการเล่น',
       logEmpty:'ยังไม่มีการเล่น',
+      framesHeader:'ผลแต่ละเฟรม',
+      framesEmpty:'ยังไม่จบเฟรมไหน',
+      framesWonLabel:'ชนะเฟรม',
+      clearMatchBtn:'ล้างแมตช์',
+      clearMatchConfirm:'กดอีกครั้งเพื่อยืนยัน',
+      frameNo:function(n){ return 'เฟรมที่ ' + n; },
+      frameWinnerRow:function(n,name){ return 'เฟรม ' + n + ' · ' + name + ' ชนะ'; },
+      frameDrawRow:function(n){ return 'เฟรม ' + n + ' · เสมอ'; },
       rulesSummary:'กติกาการนับแต้ม (สากล เลือกได้ 6 หรือ 15 ลูก)',
       expectedRed:'ต้องแทง: ลูกแดง',
       expectedColorFree:'ต้องแทง: ลูกสี (เลือกได้)',
@@ -661,7 +732,11 @@
         adjust:function(p,delta){ return p + ' ปรับแต้มมือ ' + (delta>0?'+':'') + delta; },
         miss:function(p,brk){ return p + ' พลาด' + (brk>0 ? ' · เบรก ' + brk : ''); },
         modeChange:function(n){ return 'เปลี่ยนโหมดเป็นลูกแดง ' + n + ' ลูก เริ่มเฟรมใหม่'; },
-        blackRespot:'แต้มเท่ากันหลังดำลง! ตั้งลูกดำใหม่เพื่อตัดสินเฟรม'
+        blackRespot:'แต้มเท่ากันหลังดำลง! ตั้งลูกดำใหม่เพื่อตัดสินเฟรม',
+        frameEnd:function(n,name,a,b){ return 'จบเฟรมที่ ' + n + ' · ' + name + ' ชนะ ' + a + '-' + b; },
+        frameEndDraw:function(n,a,b){ return 'จบเฟรมที่ ' + n + ' · เสมอ ' + a + '-' + b; },
+        newFrame:function(n){ return 'เริ่มเฟรมที่ ' + n; },
+        matchCleared:'ล้างแมตช์แล้ว เริ่มนับเฟรมใหม่'
       },
       rules:[
         'เลือกจำนวนลูกแดงได้ที่ปุ่ม <b>6 ลูก / 15 ลูก</b> ด้านบนโต๊ะ (15 ลูก คือมาตรฐานสนุกเกอร์จริง ส่วน 6 ลูกเป็นเวอร์ชันย่อ เล่นเร็วขึ้น) กติกาการนับแต้มอื่นๆ ใช้ตามมาตรฐานสากลเหมือนกันทั้งสองโหมด การสลับโหมดจะเริ่มเฟรมใหม่ทันที',
@@ -675,7 +750,8 @@
         'ปุ่ม <b>พลาด/จบเทิร์น</b> ใช้เมื่อแทงไม่ลง แล้วสลับตาให้อีกฝ่ายโดยไม่มีการหักแต้ม',
         'ค่าแต้มลูกบอล: แดง 1 · เหลือง 2 · เขียว 3 · น้ำตาล 4 · น้ำเงิน 5 · ชมพู 6 · ดำ 7',
         'ถ้าทำ <b>ลูกขาว (คิวบอล) ลงหลุม</b> กดปุ่มลูกขาว จะ<b>หัก 4 แต้มออกจากคะแนนของคนแทงเอง</b>ทันที (ไม่ใช่มอบแต้มให้อีกฝ่าย) แล้วสลับตาให้อีกฝ่ายเล่นต่อ',
-        'ปุ่ม <b>−/+ ปรับแต้ม</b> ใต้คะแนนแต่ละฝั่ง ใช้แก้คะแนนด้วยมือได้อิสระ (เช่น กรณีกรรมการต้องหักแต้มเป็นกรณีพิเศษ) คะแนนสามารถ<b>ติดลบ</b>ได้ถ้าปรับหักจนต่ำกว่า 0'
+        'ปุ่ม <b>−/+ ปรับแต้ม</b> ใต้คะแนนแต่ละฝั่ง ใช้แก้คะแนนด้วยมือได้อิสระ (เช่น กรณีกรรมการต้องหักแต้มเป็นกรณีพิเศษ) คะแนนสามารถ<b>ติดลบ</b>ได้ถ้าปรับหักจนต่ำกว่า 0',
+        'พอเก็บลูกหมดโต๊ะ ระบบจะ<b>บันทึกผลเฟรมอัตโนมัติ</b>ลงในกล่อง "ผลแต่ละเฟรม" พร้อมนับสกอร์แมตช์ให้ด้านบนโต๊ะ ถ้าเลิกกลางเฟรม กดปุ่ม <b>เฟรมใหม่</b> ก็จะบันทึกสกอร์ ณ ตอนนั้นแล้วขึ้นเฟรมถัดไปให้ ส่วนปุ่ม <b>ล้างแมตช์</b> ใช้ล้างผลทุกเฟรมเพื่อเริ่มนับใหม่ (ต้องกดยืนยัน 2 ครั้ง)'
       ]
     },
     en: {
@@ -698,6 +774,14 @@
       foulCancelLabel:'Cancel',
       logHeader:'Match log',
       logEmpty:'No shots yet',
+      framesHeader:'Frame results',
+      framesEmpty:'No frames finished yet',
+      framesWonLabel:'Frames',
+      clearMatchBtn:'Clear match',
+      clearMatchConfirm:'Tap again to confirm',
+      frameNo:function(n){ return 'Frame ' + n; },
+      frameWinnerRow:function(n,name){ return 'Frame ' + n + ' · ' + name + ' won'; },
+      frameDrawRow:function(n){ return 'Frame ' + n + ' · drawn'; },
       rulesSummary:'Scoring rules (standard, 6 or 15 reds)',
       expectedRed:'On: Red',
       expectedColorFree:'On: any colour',
@@ -721,7 +805,11 @@
         adjust:function(p,delta){ return p + ' manual adjustment ' + (delta>0?'+':'') + delta; },
         miss:function(p,brk){ return p + ' missed' + (brk>0 ? ' · break ' + brk : ''); },
         modeChange:function(n){ return 'Switched to ' + n + ' reds — new frame started'; },
-        blackRespot:'Scores level after the black! Black respotted to decide the frame'
+        blackRespot:'Scores level after the black! Black respotted to decide the frame',
+        frameEnd:function(n,name,a,b){ return 'Frame ' + n + ' finished · ' + name + ' won ' + a + '-' + b; },
+        frameEndDraw:function(n,a,b){ return 'Frame ' + n + ' finished · drawn ' + a + '-' + b; },
+        newFrame:function(n){ return 'Frame ' + n + ' started'; },
+        matchCleared:'Match cleared — frame count reset'
       },
       rules:[
         'Pick the number of reds with the <b>6 reds / 15 reds</b> buttons above the table (15 is the real snooker standard, 6 is a short version for quicker games). Every other scoring rule is the same in both modes. Switching modes starts a new frame straight away.',
@@ -735,7 +823,8 @@
         'The <b>Miss / End turn</b> button is for a shot that pots nothing — the turn passes with no deduction.',
         'Ball values: Red 1 · Yellow 2 · Green 3 · Brown 4 · Blue 5 · Pink 6 · Black 7',
         'Potting the <b>cue ball</b> deducts <b>4 points from the striker\'s own score</b> (it is not awarded to the opponent), then the turn passes.',
-        'The <b>−/+ adjust</b> buttons under each score let you correct a score by hand, for example a referee\'s special penalty. Scores may go <b>negative</b> if adjusted below 0.'
+        'The <b>−/+ adjust</b> buttons under each score let you correct a score by hand, for example a referee\'s special penalty. Scores may go <b>negative</b> if adjusted below 0.',
+        'When the table is cleared the frame result is <b>recorded automatically</b> in the "Frame results" box and the match score above the table updates. Ending a frame early with <b>New frame</b> also records the score as it stands and moves to the next frame. <b>Clear match</b> wipes every recorded frame and starts the count again (tap twice to confirm).'
       ]
     }
   };
@@ -806,6 +895,8 @@
       phase:'reds',
       expected:'red',
       freeBall:false,
+      frames:[],
+      frameRecorded:false,
       log:[]
     };
   }
@@ -846,6 +937,33 @@
     }
     if(state.expected) return S().foulReasonColorPrefix + ballLabel(state.expected) + S().foulReasonColorSuffix;
     return S().foulReasonColorsDone;
+  }
+
+  function recordFrame(){
+    if(state.frameRecorded) return false;
+    if(state.scores[0] === 0 && state.scores[1] === 0 && state.log.length === 0) return false;
+    var a = state.scores[0], b = state.scores[1];
+    var winner = a > b ? 0 : (b > a ? 1 : null);
+    state.frames.push({scores:[a,b], winner:winner});
+    state.frameRecorded = true;
+    var no = state.frames.length;
+    addLog(winner === null ? S().logs.frameEndDraw(no, a, b) : S().logs.frameEnd(no, state.names[winner], a, b));
+    return true;
+  }
+
+  function startNewFrame(){
+    recordFrame();
+    var names = state.names.slice();
+    var frames = state.frames.slice();
+    var lang = state.lang;
+    state = freshState();
+    state.names = names;
+    state.frames = frames;
+    state.lang = lang;
+    undoStack = [];
+    addLog(S().logs.newFrame(frames.length + 1));
+    render();
+    save();
   }
 
   function checkBlackRespot(){
@@ -896,7 +1014,10 @@
       }
 
       addLog(S().logs.pot(state.names[cur], ballLabel(key), ball.value, state.breakScore));
-      if(state.phase === 'colors') checkBlackRespot();
+      if(state.phase === 'colors'){
+        checkBlackRespot();
+        if(!state.expected) recordFrame();
+      }
     } else {
       var foulPts = Math.max(4, expectedValue(), ball.value);
       var reason = foulReason();
@@ -998,8 +1119,12 @@
     RED_COUNT = n;
     buildRedsRack();
     var names = state.names.slice();
+    var frames = state.frames.slice();
+    var lang = state.lang;
     state = freshState();
     state.names = names;
+    state.frames = frames;
+    state.lang = lang;
     undoStack = [];
     addLog(S().logs.modeChange(n));
     render();
@@ -1027,6 +1152,9 @@
     document.getElementById('foulPopoverLabel').textContent = s.foulPopoverLabel;
     document.getElementById('foulCancel').setAttribute('aria-label', s.foulCancelLabel);
     document.getElementById('logHeader').textContent = s.logHeader;
+    document.getElementById('framesHeader').textContent = s.framesHeader;
+    document.getElementById('framesWonLabel').textContent = s.framesWonLabel;
+    document.getElementById('clearMatchBtn').textContent = s.clearMatchBtn;
     document.getElementById('rulesSummary').textContent = s.rulesSummary;
     document.getElementById('rulesList').innerHTML = s.rules.map(function(r){ return '<li>' + r + '</li>'; }).join('');
     [0,1].forEach(function(i){
@@ -1059,6 +1187,9 @@
     resetArmed = false;
     clearTimeout(resetTimer);
     resetBtn.classList.remove('confirming');
+    clearArmed = false;
+    clearTimeout(clearTimer);
+    clearMatchBtn.classList.remove('confirming');
     applyLanguage();
     render();
     save();
@@ -1095,10 +1226,35 @@
     resetArmed = false;
     resetBtn.textContent = S().resetBtn;
     resetBtn.classList.remove('confirming');
+    startNewFrame();
+  });
+
+  var clearMatchBtn = document.getElementById('clearMatchBtn');
+  var clearArmed = false;
+  var clearTimer = null;
+  clearMatchBtn.addEventListener('click', function(){
+    if(!clearArmed){
+      clearArmed = true;
+      clearMatchBtn.textContent = S().clearMatchConfirm;
+      clearMatchBtn.classList.add('confirming');
+      clearTimer = setTimeout(function(){
+        clearArmed = false;
+        clearMatchBtn.textContent = S().clearMatchBtn;
+        clearMatchBtn.classList.remove('confirming');
+      }, 3000);
+      return;
+    }
+    clearTimeout(clearTimer);
+    clearArmed = false;
+    clearMatchBtn.textContent = S().clearMatchBtn;
+    clearMatchBtn.classList.remove('confirming');
     var names = state.names.slice();
+    var lang = state.lang;
     state = freshState();
     state.names = names;
+    state.lang = lang;
     undoStack = [];
+    addLog(S().logs.matchCleared);
     render();
     save();
   });
@@ -1165,6 +1321,35 @@
       btn.classList.toggle('illegal', !legal);
     });
 
+    var frames = state.frames || [];
+    document.getElementById('frameNoLabel').textContent = S().frameNo(frames.length + 1);
+    document.getElementById('framesWon0').textContent = frames.filter(function(f){ return f.winner === 0; }).length;
+    document.getElementById('framesWon1').textContent = frames.filter(function(f){ return f.winner === 1; }).length;
+
+    var framesList = document.getElementById('framesList');
+    framesList.innerHTML = '';
+    if(frames.length === 0){
+      var emptyFrame = document.createElement('li');
+      emptyFrame.className = 'empty';
+      emptyFrame.textContent = S().framesEmpty;
+      framesList.appendChild(emptyFrame);
+    } else {
+      frames.slice().reverse().forEach(function(f, i){
+        var no = frames.length - i;
+        var row = document.createElement('li');
+        var who = document.createElement('span');
+        who.textContent = f.winner === null
+          ? S().frameDrawRow(no)
+          : S().frameWinnerRow(no, state.names[f.winner]);
+        var sc = document.createElement('span');
+        sc.className = 'frame-score';
+        sc.textContent = f.scores[0] + ' - ' + f.scores[1];
+        row.appendChild(who);
+        row.appendChild(sc);
+        framesList.appendChild(row);
+      });
+    }
+
     var logList = document.getElementById('logList');
     logList.innerHTML = '';
     if(state.log.length===0){
@@ -1212,6 +1397,7 @@
     if(!state.phase) state.phase = 'reds';
     if(!state.expected) state.expected = state.phase === 'reds' ? 'red' : (state.colorsRemaining[0] || null);
     if(state.redsRemaining > RED_COUNT) state.redsRemaining = RED_COUNT;
+    if(!Array.isArray(state.frames)) state.frames = [];
     applyLanguage();
     render();
   }
