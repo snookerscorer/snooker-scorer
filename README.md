@@ -4,6 +4,10 @@
 
 A browser-based snooker scoreboard. Tap the ball you potted and the score follows the rules. Thai / English.
 
+**เปิดใช้งาน / Live site → https://snookerscorer.github.io/snooker-scorer/**
+
+![หน้าตาของกระดานนับแต้ม](preview.png)
+
 ## ฟีเจอร์ / Features
 
 - เลือกโหมดลูกแดง **6 หรือ 15 ลูก** — pick a 6-red or 15-red frame
